@@ -210,7 +210,7 @@
 		getViewCells: function(roomId, dx, dy) {
 			var view = 0;
 			var c = this.relcell(dx, dy);
-			while (!!c && !c.isnull && c.room.id === roomId) {
+			while (!!c && c.isValid() && c.room.id === roomId) {
 				view++;
 				c = c.relcell(dx, dy);
 			}
@@ -584,6 +584,11 @@
 			// そのセルから上下左右に何セルあるか
 			for (var c = 0; c < bd.cell.length; c++) {
 				var cell = bd.cell[c];
+				// 無効セルは無視
+				if (cell.isEmpty()) {
+					continue;
+				}
+
 				var roomId = cell.room.id;
 				cell.view = 1;
 
